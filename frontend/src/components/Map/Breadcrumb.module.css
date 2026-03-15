@@ -1,0 +1,80 @@
+.breadcrumb {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 6px 14px;
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.backBtn {
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 6px;
+  margin-right: 4px;
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+
+.backBtn:hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.homeBtn {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 4px;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.homeBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.separator {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.crumb {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+  white-space: nowrap;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.crumb:hover {
+  color: var(--color-text-primary);
+}
+
+.crumb.active {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  cursor: default;
+}

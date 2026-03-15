@@ -1,0 +1,25 @@
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  pointer-events: none;
+  height: 4px;
+}
+
+.partyBlock {
+  flex: 1;
+  position: relative;
+}
+
+.colorBar {
+  height: 4px;
+  min-width: 2px;
+  transition: width 0.8s var(--ease-out);
+}
+
+.partyInfo {
+  display: none; /* visible on hover in a full implementation */
+}

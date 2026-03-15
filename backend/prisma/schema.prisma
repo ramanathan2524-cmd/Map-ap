@@ -1,0 +1,194 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Prisma Schema — AP Election Map
+// Database: PostgreSQL 15 + PostGIS 3.3
+// ─────────────────────────────────────────────────────────────────────────────
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis(version: "3.3.4")]
+}
+
+// ── Administrative Hierarchy ─────────────────────────────────────────────────
+
+model District {
+  id          String  @id @default(cuid())
+  name        String
+  code        String  @unique
+  totalVoters Int     @default(0) @map("total_voters")
+  /// Stored as PostGIS geometry — access via raw queries
+  /// geom geography(MULTIPOLYGON, 4326) NOT NULL
+
+  mpConstituencies MPConstituency[]
+  electionResults  ElectionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("districts")
+}
+
+model MPConstituency {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  number      Int
+  districtId  String   @map("district_id")
+  totalVoters Int      @default(0) @map("total_voters")
+
+  district         District          @relation(fields: [districtId], references: [id])
+  mlaConstituencies MLAConstituency[]
+  electionResults  ElectionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("mp_constituencies")
+}
+
+model MLAConstituency {
+  id               String @id @default(cuid())
+  name             String
+  code             String @unique
+  number           Int
+  mpConstituencyId String @map("mp_constituency_id")
+  districtId       String @map("district_id")
+  totalVoters      Int    @default(0) @map("total_voters")
+
+  mpConstituency  MPConstituency   @relation(fields: [mpConstituencyId], references: [id])
+  mandals         Mandal[]
+  electionResults ElectionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("mla_constituencies")
+}
+
+model Mandal {
+  id               String @id @default(cuid())
+  name             String
+  code             String @unique
+  mlaConstituencyId String @map("mla_constituency_id")
+  districtId       String @map("district_id")
+  totalVoters      Int    @default(0) @map("total_voters")
+
+  mlaConstituency MLAConstituency  @relation(fields: [mlaConstituencyId], references: [id])
+  villages        Village[]
+  electionResults ElectionResult[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("mandals")
+}
+
+model Village {
+  id          String @id @default(cuid())
+  name        String
+  code        String @unique
+  mandalId    String @map("mandal_id")
+  districtId  String @map("district_id")
+  totalVoters Int    @default(0) @map("total_voters")
+
+  mandal  Mandal  @relation(fields: [mandalId], references: [id])
+  booths  Booth[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("villages")
+}
+
+model Booth {
+  id                  String @id @default(cuid())
+  boothNumber         String @map("booth_number")
+  villageId           String @map("village_id")
+  villageName         String @map("village_name")
+  mandalId            String @map("mandal_id")
+  mandalName          String @map("mandal_name")
+  mlaConstituencyId   String @map("mla_constituency_id")
+  mlaConstituencyName String @map("mla_constituency_name")
+  mpConstituencyId    String @map("mp_constituency_id")
+  districtId          String @map("district_id")
+  totalVoters         Int    @default(0) @map("total_voters")
+  /// location stored as PostGIS geography(POINT,4326) — use raw queries
+
+  village      Village       @relation(fields: [villageId], references: [id])
+  boothResults BoothResult[]
+
+  @@unique([boothNumber, mlaConstituencyId])
+  @@map("booths")
+}
+
+// ── Election Data ─────────────────────────────────────────────────────────────
+
+model Party {
+  id           String  @id @default(cuid())
+  name         String
+  abbreviation String  @unique
+  color        String
+  logoUrl      String? @map("logo_url")
+  allianceId   String? @map("alliance_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("parties")
+}
+
+/// Aggregated election results per region & year
+/// party_results stored as JSONB array of PartyResult objects
+model ElectionResult {
+  id                  String  @id @default(cuid())
+  regionId            String  @map("region_id")
+  regionLevel         String  @map("region_level")
+  electionYear        Int     @map("election_year")
+  electionType        String  @default("assembly") @map("election_type")
+  winningParty        String? @map("winning_party")
+  winningPartyId      String? @map("winning_party_id")
+  winningCandidate    String? @map("winning_candidate")
+  totalVotesCast      Int     @default(0) @map("total_votes_cast")
+  totalVoters         Int     @default(0) @map("total_voters")
+  voterTurnoutPercent Float   @default(0) @map("voter_turnout_percent")
+  marginOfVictory     Int     @default(0) @map("margin_of_victory")
+  /// JSONB: [{ partyId, partyCode, votes, voteSharePercent, candidateName }]
+  partyResults        Json    @default("[]") @map("party_results")
+
+  districtId          String? @map("district_id")
+  mpConstituencyId    String? @map("mp_constituency_id")
+  mlaConstituencyId   String? @map("mla_constituency_id")
+  mandalId            String? @map("mandal_id")
+
+  district       District?       @relation(fields: [districtId], references: [id])
+  mpConstituency MPConstituency? @relation(fields: [mpConstituencyId], references: [id])
+  mlaConstituency MLAConstituency? @relation(fields: [mlaConstituencyId], references: [id])
+  mandal         Mandal?         @relation(fields: [mandalId], references: [id])
+
+  @@unique([regionId, regionLevel, electionYear, electionType])
+  @@index([regionLevel, electionYear])
+  @@index([winningPartyId, electionYear])
+  @@map("election_results")
+}
+
+/// Booth-level results
+model BoothResult {
+  id                  String @id @default(cuid())
+  boothId             String @map("booth_id")
+  electionYear        Int    @map("election_year")
+  winningParty        String? @map("winning_party")
+  winningPartyId      String? @map("winning_party_id")
+  totalVotesCast      Int    @default(0) @map("total_votes_cast")
+  voterTurnoutPercent Float  @default(0) @map("voter_turnout_percent")
+  partyResults        Json   @default("[]") @map("party_results")
+
+  booth Booth @relation(fields: [boothId], references: [id])
+
+  @@unique([boothId, electionYear])
+  @@map("booth_results")
+}

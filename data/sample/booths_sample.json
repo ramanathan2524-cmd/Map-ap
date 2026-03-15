@@ -1,0 +1,77 @@
+[
+  {
+    "boothNumber": "001",
+    "villageName": "Madhurawada",
+    "mandalName": "Bheemunipatnam",
+    "mlaConstituencyName": "Bheemunipatnam",
+    "mpConstituencyName": "Visakhapatnam",
+    "districtName": "Visakhapatnam",
+    "latitude": 17.8956,
+    "longitude": 83.3951,
+    "totalVoters": 950,
+    "electionYear": 2024,
+    "partyResults": [
+      { "partyCode": "YSRCP", "candidateName": "K. Raghu Rama Krishna Raju", "votes": 412 },
+      { "partyCode": "TDP",   "candidateName": "M. Srinivas Rao",           "votes": 318 },
+      { "partyCode": "JSP",   "candidateName": "V. Ravi Teja",              "votes": 142 },
+      { "partyCode": "INC",   "candidateName": "S. Padma Rao",              "votes":  54 },
+      { "partyCode": "IND",   "candidateName": "B. Suresh",                 "votes":  24 }
+    ]
+  },
+  {
+    "boothNumber": "002",
+    "villageName": "Kommadi",
+    "mandalName": "Bheemunipatnam",
+    "mlaConstituencyName": "Bheemunipatnam",
+    "mpConstituencyName": "Visakhapatnam",
+    "districtName": "Visakhapatnam",
+    "latitude": 17.8801,
+    "longitude": 83.3802,
+    "totalVoters": 1120,
+    "electionYear": 2024,
+    "partyResults": [
+      { "partyCode": "TDP",   "candidateName": "M. Srinivas Rao",           "votes": 489 },
+      { "partyCode": "YSRCP", "candidateName": "K. Raghu Rama Krishna Raju","votes": 367 },
+      { "partyCode": "JSP",   "candidateName": "V. Ravi Teja",              "votes": 178 },
+      { "partyCode": "BJP",   "candidateName": "P. Hari Babu",              "votes":  56 },
+      { "partyCode": "IND",   "candidateName": "M. Venkaiah",               "votes":  30 }
+    ]
+  },
+  {
+    "boothNumber": "001",
+    "villageName": "Pithapuram",
+    "mandalName": "Pithapuram",
+    "mlaConstituencyName": "Pithapuram",
+    "mpConstituencyName": "Kakinada",
+    "districtName": "East Godavari",
+    "latitude": 17.1167,
+    "longitude": 82.2554,
+    "totalVoters": 1045,
+    "electionYear": 2024,
+    "partyResults": [
+      { "partyCode": "JSP",   "candidateName": "Pawan Kalyan",  "votes": 548 },
+      { "partyCode": "YSRCP", "candidateName": "V. Satyanarayana", "votes": 312 },
+      { "partyCode": "TDP",   "candidateName": "R. Narayana",   "votes": 142 },
+      { "partyCode": "INC",   "candidateName": "S. Bharath",    "votes":  43 }
+    ]
+  },
+  {
+    "boothNumber": "015",
+    "villageName": "Kurnool",
+    "mandalName": "Kurnool Urban",
+    "mlaConstituencyName": "Kurnool",
+    "mpConstituencyName": "Kurnool",
+    "districtName": "Kurnool",
+    "latitude": 15.8281,
+    "longitude": 78.0373,
+    "totalVoters": 1380,
+    "electionYear": 2024,
+    "partyResults": [
+      { "partyCode": "YSRCP", "candidateName": "Bhuma Akhila Priya", "votes": 621 },
+      { "partyCode": "TDP",   "candidateName": "N. Ramesh Kumar",    "votes": 398 },
+      { "partyCode": "JSP",   "candidateName": "K. Pradeep",         "votes": 223 },
+      { "partyCode": "INC",   "candidateName": "M. Raju",            "votes":  95 },
+      { "partyCode": "IND",   "candidateName": "B. Sekhar",          "votes":  43 }
+    ]
+  }
+]

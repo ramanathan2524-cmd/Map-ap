@@ -1,0 +1,81 @@
+# Martin Vector Tile Server Configuration
+# Serves PostGIS tables as MVT (Mapbox Vector Tiles) for high-performance rendering
+
+listen_addresses: "0.0.0.0:3000"
+
+postgres:
+  connection_string: "${DATABASE_URL}"
+  pool_size: 10
+
+tables:
+  districts:
+    schema: public
+    table: districts
+    srid: 4326
+    geometry_column: geom
+    geometry_type: MULTIPOLYGON
+    id_column: id
+    properties:
+      - id
+      - name
+      - code
+      - total_voters
+
+  mp_constituencies:
+    schema: public
+    table: mp_constituencies
+    srid: 4326
+    geometry_column: geom
+    geometry_type: MULTIPOLYGON
+    id_column: id
+    properties:
+      - id
+      - name
+      - code
+      - number
+      - district_id
+      - total_voters
+
+  mla_constituencies:
+    schema: public
+    table: mla_constituencies
+    srid: 4326
+    geometry_column: geom
+    geometry_type: MULTIPOLYGON
+    id_column: id
+    properties:
+      - id
+      - name
+      - code
+      - number
+      - mp_constituency_id
+      - total_voters
+
+  mandals:
+    schema: public
+    table: mandals
+    srid: 4326
+    geometry_column: geom
+    geometry_type: MULTIPOLYGON
+    id_column: id
+    properties:
+      - id
+      - name
+      - code
+      - mla_constituency_id
+      - total_voters
+
+  booths:
+    schema: public
+    table: booths
+    srid: 4326
+    geometry_column: location
+    geometry_type: POINT
+    id_column: id
+    properties:
+      - id
+      - booth_number
+      - village_name
+      - mandal_name
+      - mla_constituency_name
+      - total_voters
