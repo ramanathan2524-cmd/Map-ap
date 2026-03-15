@@ -26,7 +26,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           leaflet: ["leaflet", "react-leaflet"],
-          vendor: ["react", "react-dom", "zustand", "@tanstack/react-query"],
+          vendor: ["react", "react-dom", "zustand"],
           charts: ["recharts"],
         },
       },
